@@ -4,7 +4,7 @@ import enum
 import re
 
 FILE_INPUT = "Attendance.txt"
-FILE_OUTPUT = "Attendance2.txt"
+FILE_OUTPUT = "Out.txt"
 
 
 class Day(enum.Enum):
@@ -33,10 +33,18 @@ class DayData:
         return "{0} {1} {2}".format(self.day, self.minute_start, self.minute_end)
 
     def get_str_start(self):
-        return DayData.minute_to_str(self.minute_start)
+        return DayData.minute_to_str(DayData.low(self.minute_start))
 
     def get_str_end(self):
-        return DayData.minute_to_str(self.minute_end)
+        return DayData.minute_to_str(DayData.high(self.minute_end))
+
+    @staticmethod 
+    def low(n):
+        return (n + 14) // 15 * 15
+
+    @staticmethod 
+    def high(n):
+        return n // 15 * 15
 
     @staticmethod 
     def minute_to_str(minute):
@@ -58,15 +66,7 @@ def read_file(path):
     with open(path, "r") as file:
         return file.readlines()
 
-def fuck(n):
-    if (n >= 45):
-        return 45
-    elif (n >= 30):
-        return 30
-    elif (n >= 15):
-        return 15
-    else:
-        return 0
+
     
 
 if __name__ == "__main__":
@@ -102,7 +102,6 @@ if __name__ == "__main__":
             index = Day.Sunday
 
         index = index.value - 1
-        minute = fuck(minute)
 
         print(index)
         print(hour)
